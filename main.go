@@ -9,7 +9,7 @@ import (
 )
 
 func main()  {
-		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(60)*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(60)*time.Second)
 	defer cancel()
 
 	str,err:=subprocess.RunCommand(ctx,"sh","-c","net user")
