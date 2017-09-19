@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"context"
 	"os/exec"
+	"bytes"
 )
 
 func RunCommand(ctx context.Context, cmd string, args ...string) (string, error) {
@@ -18,9 +19,16 @@ func RunCommand(ctx context.Context, cmd string, args ...string) (string, error)
 	}
 
 
-	output, err := c.Output()
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	c.Stdout = &out
+	c.Stderr = &stderr
+
+	err:=c.Run()
+
 	if err != nil {
-		return string(output), err
+		fmt.Println(fmt.Sprint("exec Command error") + ": " + stderr.String())
+		return out.String(),err
 	}
 
 	// check for exec context timeout
@@ -30,5 +38,5 @@ func RunCommand(ctx context.Context, cmd string, args ...string) (string, error)
 		}
 	}
 
-	return string(output), nil
+	return out.String(), nil
 }
