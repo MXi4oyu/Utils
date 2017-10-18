@@ -7,6 +7,7 @@ import (
 	"github.com/MXi4oyu/Utils/subprocess"
 	"github.com/MXi4oyu/Utils/cnencoder/gbk"
 	"github.com/MXi4oyu/Utils/walkpath"
+	"github.com/MXi4oyu/Utils/gziputil"
 )
 
 func main()  {
@@ -22,10 +23,14 @@ func main()  {
 
 	//获取指定目录下的所有文件，不进入子目录，可通过后缀名过滤
 	files,err :=walkpath.ListDir("/var/www/",".php")
-	fmt.Println(files)
+	fmt.Println(files,err)
 
 	//获取指定目录及其子目录下的所有文件，可通过后缀名进行过滤
 	filesall,err:=walkpath.WalkDir("/var/www",".php")
-	fmt.Println(filesall)
+	fmt.Println(filesall,err)
+
+	//解压tar文件
+
+	gziputil.TarDeCompress("/tmp/layer.tar","/tmp/testtar/")
 
 }
