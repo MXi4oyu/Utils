@@ -2,10 +2,10 @@ package gziputil
 
 import (
 	"archive/tar"
-	"os"
 	"io"
-	"strings"
 	"log"
+	"os"
+	"strings"
 )
 
 func unTarFile(dstFile string, tr *tar.Reader) error {
@@ -26,55 +26,54 @@ func unTarFile(dstFile string, tr *tar.Reader) error {
 }
 
 //解压tar文件
-func TarDeCompress(tarFile,dstFile string) error  {
+func TarDeCompress(tarFile, dstFile string) error {
 
-	srcFile,err:=os.Open(tarFile)
-	if err!=nil{
+	srcFile, err := os.Open(tarFile)
+	if err != nil {
 		log.Fatal(err.Error())
 		return err
 	}
 
 	defer srcFile.Close()
 
-	tr:=tar.NewReader(srcFile)
+	tr := tar.NewReader(srcFile)
 
-	for{
-		hdr,err:=tr.Next()
-		if err!=nil{
-			if err==io.EOF{
+	for {
+		hdr, err := tr.Next()
+		if err != nil {
+			if err == io.EOF {
 				break
-			}else{
+			} else {
 				log.Fatal(err.Error())
 				return err
 			}
 		}
 
-		fname:=hdr.Name
-		finfo:=hdr.FileInfo()
+		fname := hdr.Name
+		finfo := hdr.FileInfo()
 
-		dstfullpath:=dstFile+fname
+		dstfullpath := dstFile + fname
 
-		if hdr.Typeflag ==tar.TypeDir{
+		if hdr.Typeflag == tar.TypeDir {
 			//创建目录
-			os.MkdirAll(dstfullpath,finfo.Mode().Perm())
+			os.MkdirAll(dstfullpath, finfo.Mode().Perm())
 			//设置目录权限
-			os.Chmod(dstfullpath,finfo.Mode().Perm())
-		}else{
+			os.Chmod(dstfullpath, finfo.Mode().Perm())
+		} else {
 			//创建文件所在目录
-			fpath:=dstfullpath[:strings.LastIndex(dstfullpath,"/")+1]
-			os.MkdirAll(fpath,os.ModePerm)
+			fpath := dstfullpath[:strings.LastIndex(dstfullpath, "/")+1]
+			os.MkdirAll(fpath, os.ModePerm)
 			//将tr中的数据写入到文件中
 
-			if err:=unTarFile(dstfullpath,tr);err!=nil{
-				log.Fatal(err.Error())
+			if err := unTarFile(dstfullpath, tr); err != nil {
+				//log.Fatal(err.Error())
 				return err
 			}
 
 			//设置文件权限
-			os.Chmod(dstfullpath,finfo.Mode().Perm())
+			os.Chmod(dstfullpath, finfo.Mode().Perm())
 
 		}
-
 
 	}
 
