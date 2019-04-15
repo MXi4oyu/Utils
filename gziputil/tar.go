@@ -30,7 +30,8 @@ func TarDeCompress(tarFile, dstFile string) error {
 
 	srcFile, err := os.Open(tarFile)
 	if err != nil {
-		log.Fatal(err.Error())
+		//log.Fatal(err.Error())
+        log.Println(err.Error())
 		return err
 	}
 
@@ -44,7 +45,8 @@ func TarDeCompress(tarFile, dstFile string) error {
 			if err == io.EOF {
 				break
 			} else {
-				log.Fatal(err.Error())
+				//log.Fatal(err.Error())
+                log.Println(err.Error())
 				return err
 			}
 		}
@@ -67,6 +69,7 @@ func TarDeCompress(tarFile, dstFile string) error {
 
 			if err := unTarFile(dstfullpath, tr); err != nil {
 				//log.Fatal(err.Error())
+                log.Println(err.Error())
 				return err
 			}
 
