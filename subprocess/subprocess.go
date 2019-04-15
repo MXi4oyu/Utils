@@ -1,11 +1,10 @@
 package subprocess
 
-
 import (
-	"fmt"
-	"context"
-	"os/exec"
 	"bytes"
+	"context"
+	"fmt"
+	"os/exec"
 )
 
 func RunCommand(ctx context.Context, cmd string, args ...string) (string, error) {
@@ -18,17 +17,16 @@ func RunCommand(ctx context.Context, cmd string, args ...string) (string, error)
 		c = exec.Command(cmd, args...)
 	}
 
-
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	c.Stdout = &out
 	c.Stderr = &stderr
 
-	err:=c.Run()
+	err := c.Run()
 
 	if err != nil {
 		fmt.Println(fmt.Sprint("exec Command error") + ": " + stderr.String())
-		return out.String(),err
+		return out.String(), err
 	}
 
 	// check for exec context timeout
