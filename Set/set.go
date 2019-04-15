@@ -31,8 +31,12 @@ func (s *Set) Remove(item interface{}) {
 func (s *Set) Has(item interface{}) bool {
 	s.RLock()
 	defer s.RUnlock()
-	_, ok := s.m[item]
-	return ok
+    if _, ok := s.m[item];ok{
+
+		return true
+	}else{
+		return false
+	}
 }
 
 func (s *Set) Clear() {
